@@ -1,13 +1,33 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class DGraph implements graph{
-	private HashMap<Integer, node_data> nodeMap ;
-	private HashMap<Integer, HashMap<Integer,edge_data>> edgeMap ;
+public class DGraph implements graph , Serializable {
+	private HashMap<Integer, node_data> nodeMap = new LinkedHashMap<>() ;
+	private HashMap<Integer, HashMap<Integer,edge_data>> edgeMap = new LinkedHashMap<>() ;
 	private int MC=0;
 	private int numOfEdge=0;
 
+	public DGraph(){
+
+	}
+	public DGraph(graph g){
+		if(g.getV()!=null) { // collection of node_data
+			for (node_data me : g.getV()) {
+				nodeMap.put(me.getKey(), me);
+				if(g.getE(me.getKey())!=null){// if the is a coolection of edge_data for this key(src)
+					for (edge_data me2:g.getE(me.getKey()) ) {
+						HashMap<Integer, edge_data> me3= new HashMap<Integer,edge_data>();
+						me3.put(me2.getDest(),me2);
+						edgeMap.put(me.getKey(),me3);
+					}
+				}
+			}
+		}
+
+
+	}
 
 	@Override
 	public node_data getNode(int key) {
