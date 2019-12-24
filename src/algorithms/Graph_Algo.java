@@ -2,6 +2,7 @@ package algorithms;
 
 import java.util.List;
 
+import dataStructure.DGraph;
 import dataStructure.graph;
 import dataStructure.node_data;
 /**
@@ -11,11 +12,11 @@ import dataStructure.node_data;
  *
  */
 public class Graph_Algo implements graph_algorithms{
+	graph graph= new DGraph();
 
 	@Override
 	public void init(graph g) {
-		// TODO Auto-generated method stub
-		
+		graph = g;
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public boolean isConnected() {
-		// TODO Auto-generated method stub
+		graph.getV()
 		return false;
 	}
 

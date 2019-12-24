@@ -9,6 +9,11 @@ public class EdgeData implements edge_data {
 public EdgeData(){
     this.Tag=-1;
 }
+public EdgeData( int Src, int Dest, double Weight){
+    this.Src=Src;
+    this.Dest=Dest;
+    this.Weight=Weight;
+}
     @Override
     public int getSrc() {
         return this.Src;
