@@ -57,26 +57,60 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 		
 	}
+	private void changeTagForConnectedNodes(Collection<edge_data> allEdgeOfThisNode, int tag){
+		for (edge_data check:allEdgeOfThisNode){// change the tag of edge we been throw
+			if(check.getTag()!=tag){
+				check.setTag(tag);
+			}
+			if(graph.getNode(check.getDest()).getTag()!=tag){//change the tag of dest node we been throw
+				graph.getNode(check.getDest()).setTag(tag);
+			}
+			if(graph.getE(check.getDest())!=null) { //if there is a edges for the dest , we check if we been there and if not we send it
+				for (edge_data sendIfNotTag : graph.getE(check.getDest())) {
+					if (sendIfNotTag.getTag() != tag) {
+						changeTagForConnectedNodes(graph.getE(check.getDest()), tag);
+					}
+				}
+			}
+		}
+
+	}
+	private boolean checkIfAllTagsIsTheSame(Collection <node_data> nodes, int tag){
+		for (node_data node:nodes){
+			if(node.getTag()!=tag){
+				return false;
+			}
+			else {
+				node.setTag(-1);
+			}
+		}
+		return true;
+	}
 
 
 	@Override
 	public boolean isConnected() {
+		boolean connected= true;
 		if(graph.getV()==null){
 			return false;
 		}
-		for (node_data vertical :graph.getV()) {// for each vertical we check if it can go throw all other vertical
-			vertical.setTag(vertical.getKey());
-			for (edge_data verticalsedges:graph.getE(vertical.getKey())) {// the edges of the vertical
-				if (verticalsedges.getTag() != vertical.getKey()) {
-					graph.getNode(verticalsedges.getDest()).setTag(vertical.getKey());
-
+		for (node_data allNodes:graph.getV()) {// go throw all nodes
+			allNodes.setTag(allNodes.getKey());
+			if(graph.getE(allNodes.getKey())==null) {
+				return false;
+			}
+			else{
+				changeTagForConnectedNodes(graph.getE(allNodes.getKey()),allNodes.getKey());
+				connected=checkIfAllTagsIsTheSame(graph.getV(), allNodes.getKey());
+				if (connected==false){
+					return connected;
 				}
 			}
 
-			}
+		}
 
 
-		return false;
+		return connected;
 	}
 
 	@Override
