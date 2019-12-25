@@ -7,9 +7,9 @@ import java.io.Serializable;
 public class NodeData implements node_data, Serializable {
     private int Key;
     private Point3D Location;
-    private double Weight;
-    private String Info= "";
-    private int Tag;
+    private double Weight=Double.MAX_VALUE;
+    private String Info= "false";
+    private int Tag=-1;
     public NodeData(){
         this.Tag=-1;
     }
