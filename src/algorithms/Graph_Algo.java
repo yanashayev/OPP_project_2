@@ -126,8 +126,12 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		// TODO Auto-generated method stub
-		return 0;
+			List<node_data> path= shortestPath(src,dest);
+			double answer=0;
+		for (node_data nodesInPath:	path) {
+			answer+=nodesInPath.getWeight();
+		}
+		return answer;
 	}
 	private void setTheSmallWeight(int dest, double w,int whereW){
 		if (graph.getNode(dest).getWeight()>w){
@@ -141,27 +145,47 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
+		List<node_data> answer= new ArrayList<>();
 		PriorityQueue<node_data> q = new PriorityQueue<node_data>(graph.getV().size(), new v_Comp());
 		q.addAll(graph.getV());
 		node_data current;
 		graph.getNode(src).setWeight(0);
 		while (!q.isEmpty()) {
 			current=q.remove();
+			graph.getNode(current.getKey()).setInfo("true");
 			if (graph.getNode(current.getKey())!=null){
-				for (edge_data e: graph.getE(current.getKey())){
-					setTheSmallWeight(e.getDest(),sendTheWeight(current.getKey(), e),current.getKey());
+				for (edge_data e: graph.getE(current.getKey())) {
+					if (graph.getNode(e.getDest()).getInfo() == "false") {
+						setTheSmallWeight(e.getDest(), sendTheWeight(current.getKey(), e), current.getKey());
+					}
 				}
 
 			}
 
 		}
-
-		return null;
+		Stack<node_data> stack = new Stack<node_data>();
+		stack.push(graph.getNode(dest));
+		int temp=graph.getNode(dest).getTag();//the node before dest
+		stack.push(graph.getNode(temp));
+		while (temp!=src){// if we didnt came to src
+			int temp2=graph.getNode(temp).getTag();
+			temp=temp2;
+			stack.push(graph.getNode(temp));
+		}
+		while (!stack.empty()){
+			answer.add(stack.pop());
+		}
+		return answer;
 	}
 
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
-		// TODO Auto-generated method stub
+		if (!isConnected()) {
+			return null;
+		}
+		else{
+
+		}
 		return null;
 	}
 
