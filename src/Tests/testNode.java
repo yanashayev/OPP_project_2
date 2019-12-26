@@ -7,6 +7,25 @@ import utils.Point3D;
 
 public class testNode {
     @Test
+    void NodeDatat(){
+        NodeData n=new NodeData();
+        assertEquals(-1,n.getTag());
+        int k=1;
+        double w=7;
+        NodeData m=new NodeData(k,7);
+        assertEquals(7,m.getWeight());
+        assertEquals(1,m.getKey());
+        NodeData y= new NodeData(k);
+        assertEquals(1,y.getKey());
+        Point3D p=new Point3D(1,2,0);
+        NodeData a= new NodeData(1,p,7,"blabla",2);
+        assertEquals(1,a.getKey());
+        assertEquals(p,a.getLocation());
+        assertEquals(7,a.getWeight());
+        assertEquals("blabla",a.getInfo());
+        assertEquals(2,a.getTag());
+    }
+    @Test
     void getKey(){
             NodeData n= new NodeData(1);
             assertEquals(1, n.getKey());
