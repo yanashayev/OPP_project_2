@@ -180,10 +180,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
-		if (!isConnected()) {
-			return null;
-		}
-		else{
+
 			List<node_data> TSP = new LinkedList<node_data>();
 			Iterator<Integer> i = targets.iterator();
 			int src=i.next();
@@ -191,13 +188,14 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			while(i.hasNext())
 			{
 				int dest=i.next();
-				List<node_data> nodePath = new LinkedList<node_data>(shortestPath(src,dest));
-				nodePath.remove(0);//avoid duplicates
-				TSP.addAll(nodePath);
+				List<node_data> temp = shortestPath(src,dest);
+				if (temp==null) return null;
+				temp.remove(0);//avoid duplicates
+				TSP.addAll(temp);
 				src=dest;
 			}
 			return TSP;
-		}
+
 
 
 	}
