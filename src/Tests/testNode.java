@@ -9,6 +9,7 @@ public class testNode {
     @Test
     void NodeDatat(){
         NodeData n=new NodeData();
+        assertEquals("false", n.getInfo());
         assertEquals(-1,n.getTag());
         int k=1;
         double w=7;

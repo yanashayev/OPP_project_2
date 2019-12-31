@@ -184,9 +184,22 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			return null;
 		}
 		else{
-
+			List<node_data> TSP = new LinkedList<node_data>();
+			Iterator<Integer> i = targets.iterator();
+			int src=i.next();
+			TSP.add(0,graph.getNode(src));
+			while(i.hasNext())
+			{
+				int dest=i.next();
+				List<node_data> nodePath = new LinkedList<node_data>(shortestPath(src,dest));
+				nodePath.remove(0);//avoid duplicates
+				TSP.addAll(nodePath);
+				src=dest;
+			}
+			return TSP;
 		}
-		return null;
+
+
 	}
 
 	@Override

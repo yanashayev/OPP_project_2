@@ -16,6 +16,13 @@ public EdgeData( int Src, int Dest, double Weight){
     this.Dest=Dest;
     this.Weight=Weight;
 }
+    public EdgeData(int src, int dest, double weight, String info, int tag){
+    this.Src=src;
+    this.Dest=dest;
+    this.Weight=weight;
+    this.Info=info;
+    this.Tag=tag;
+    }
     @Override
     public int getSrc() {
         return this.Src;
@@ -49,5 +56,10 @@ public EdgeData( int Src, int Dest, double Weight){
     @Override
     public void setTag(int t) {
     this.Tag=t;
+    }
+
+    @Override
+    public String toString(){
+    return "Src: "+this.Src+ " Weight: "+this.Weight+" Dest: "+this.Dest+" Info: "+this.Info+" Tag: "+this.Tag;
     }
 }

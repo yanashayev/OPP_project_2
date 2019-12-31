@@ -11,8 +11,30 @@ public class NodeData implements node_data, Serializable {
     private String Info= "false";
     private int Tag=-1;
     public NodeData(){
+        this.setInfo("false");
         this.Tag=-1;
     }
+    public NodeData(int key, double weight){
+        this.Key=key;
+        this.Weight=weight;
+    }
+    public NodeData(int key){
+        this.Key=key;
+    }
+    public NodeData(int key, Point3D location ){
+        this.Key=key;
+        this.Location=location;
+    }
+
+    public NodeData(int key, Point3D location , double weight,String info,int tag){
+        this.Key=key;
+        this.Location=location;
+        this.Weight=weight;
+        this.Info=info;
+        this.Tag=tag;
+    }
+
+
 
     @Override
     public int getKey() {
@@ -60,5 +82,10 @@ public class NodeData implements node_data, Serializable {
     public void setTag(int t) {
         this.Tag=t;
 
+    }
+    @Override
+    public  String toString(){
+        return "key: "+this.getKey()+" Location: "+this.Location+" Weight: "+this.Weight+ " Info: "
+                +this.Info +" Tag: "+this.Tag;
     }
 }
