@@ -14,6 +14,13 @@ public class NodeData implements node_data, Serializable {
         this.setInfo("false");
         this.Tag=-1;
     }
+    public NodeData(String s){
+        this.Key = 0;
+        this.Location = new Point3D(0,0,0);
+        this.Weight = Double.MAX_VALUE;
+        this.Tag = -1;
+        this.setInfo(s);
+    }
     public NodeData(int key, double weight){
         this.Key=key;
         this.Weight=weight;

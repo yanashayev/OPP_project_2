@@ -57,72 +57,46 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	}
 
-	private void changeTagForConnectedNodes(Collection<edge_data> allEdgeOfThisNode, int tag) {
-		for (edge_data check : allEdgeOfThisNode) {// change the tag of edge we been throw
-			if (check.getTag() != tag) {
-				check.setTag(tag);
-			}
-			if (graph.getNode(check.getDest()).getTag() != tag) {//change the tag of dest node we been throw
-				graph.getNode(check.getDest()).setTag(tag);
-			}
-			if (graph.getE(check.getDest()) != null) { //if there is a edges for the dest , we check if we been there and if not we send it
-				for (edge_data sendIfNotTag : graph.getE(check.getDest())) {
-					if (sendIfNotTag.getTag() != tag) {
-						changeTagForConnectedNodes(graph.getE(check.getDest()), tag);
-					}
-				}
-			}
-		}
 
-	}
-
-	private boolean checkIfAllTagsIsTheSame(Collection<node_data> nodes, int tag) {
-		for (node_data node : nodes) { // check if all the tags of the nodes are the same as the tag is given
-			if (node.getTag() != tag) {
+	public boolean isConnected() {
+		for (node_data node: graph.getV()) {
+			if (!isCon(node.getKey()))
 				return false;
-			} else {
-				node.setTag(-1);//, and change it back to -1
-			}
+			this.zeroTags();
 		}
 		return true;
 	}
 
-	private void changeBackAllEdgeTags() {
-		for (node_data node : graph.getV()) {
-			for (edge_data edge : graph.getE(node.getKey())) {
-				edge.setTag(-1);
-
-			}
-
+	private boolean isCon (int node_key){
+		changeTags(node_key);
+		for (node_data node: graph.getV()) {
+			if (node.getTag()!= 1)
+				return false;
 		}
+		return true;
 	}
 
-
-	@Override
-	public boolean isConnected() {
-		boolean connected = true;
-		if (graph.getV() == null) {
-			return false;
-		}
-		for (node_data allNodes : graph.getV()) {// go throw all nodes
-			allNodes.setTag(allNodes.getKey());//fix
-			if (graph.getE(allNodes.getKey()) == null) {
-				return false;
-			} else {
-				changeTagForConnectedNodes(graph.getE(allNodes.getKey()), allNodes.getKey());// send to recursive function to
-				// change all edges and nodes we been throw
-				connected = checkIfAllTagsIsTheSame(graph.getV(), allNodes.getKey());// check if all nodes are tag similarly
-				if (connected == false) {
-					return connected;
+	private void changeTags (int node_key){
+		for (node_data node: graph.getV()) {
+			int key = node.getKey();
+			for (edge_data edge: graph.getE(key)) {
+				int d = edge.getDest();
+				if (graph.getNode(d).getTag() != 1) {
+					graph.getNode(d).setTag(1);
+					changeTags(d);
 				}
 			}
-
-
 		}
-		changeBackAllEdgeTags(); //change back all tags to -1
-
-		return connected;
 	}
+
+	private void zeroTags() {
+		Collection<node_data> n = graph.getV();
+		Iterator<node_data> it = n.iterator();
+		while (it.hasNext()) {
+			it.next().setTag(0);
+		}
+	}
+
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
@@ -138,9 +112,17 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			graph.getNode(dest).setWeight(w);
 			graph.getNode(dest).setTag(whereW);
 		}
+
 	}
 	private double sendTheWeight(int current, edge_data e){
 		return graph.getNode(current).getWeight()+e.getWeight();
+	}
+	private void setTagForSrc(int current){
+		for (edge_data e:graph.getE(current)) {
+			graph.getNode(e.getDest()).setTag(current);
+
+		}
+
 	}
 
 	@Override
@@ -153,7 +135,8 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		while (!q.isEmpty()) {
 			current=q.remove();
 			graph.getNode(current.getKey()).setInfo("true");
-			if (graph.getNode(current.getKey())!=null){
+			if (graph.getE(current.getKey())!=null){
+				setTagForSrc(current.getKey());
 				for (edge_data e: graph.getE(current.getKey())) {
 					if (graph.getNode(e.getDest()).getInfo() == "false") {
 						setTheSmallWeight(e.getDest(), sendTheWeight(current.getKey(), e), current.getKey());
@@ -165,7 +148,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		}
 		Stack<node_data> stack = new Stack<node_data>();
 		stack.push(graph.getNode(dest));
-		int temp=graph.getNode(dest).getTag();//the node before dest
+		int temp=graph.getNode(dest).getTag();//the tag of  node before dest
 		stack.push(graph.getNode(temp));
 		while (temp!=src){// if we didnt came to src
 			int temp2=graph.getNode(temp).getTag();
